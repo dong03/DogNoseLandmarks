@@ -1,0 +1,35 @@
+{
+    "network": "LandmarksRegressor",
+    "encoder": "tf_efficientnet_b7_ns",
+    "batches_per_epoch": 33289,
+    "size": 380,
+    "fp16": true,
+    "optimizer": {
+        "batch_size": 10 ,
+        "type": "SGD",
+        "momentum": 0.9,
+        "weight_decay": 1e-4,
+        "learning_rate": 0.01,
+        "nesterov": true,
+        "schedule": {
+            "type": "poly",
+            "mode": "step",
+            "epochs": 80,
+            "params": {"max_iter":  33289, "cycle": 1, "power":0.8}
+        }
+    },
+    "normalize": {
+        "mean": [0.485, 0.456, 0.406],
+        "std": [0.229, 0.224, 0.225]
+    },
+    "losses": {
+        "BinaryCrossentropy": 1
+    },
+    "pos_th": 0.5,
+    "val_freq":1,
+    "opt_level" : "O1",
+    "freeze_epochs": 0,
+    "local_rank": 0,
+    "num_classes": 2
+}
+
