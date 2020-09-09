@@ -103,11 +103,12 @@ class GlobalWeightedAvgPool2d(nn.Module):
 
 
 class LandmarksRegressor(nn.Module):
-    def __init__(self, encoder, dropout_rate=0.0,out_dim=1) -> None:
+    def __init__(self, encoder, dropout_rate=0.0,out_dim=56) -> None:
         super().__init__()
         self.encoder = encoder_params[encoder]["init_op"]()
         self.avg_pool = AdaptiveAvgPool2d((1, 1))
         self.dropout = Dropout(dropout_rate)
+        self.out_dim = out_dim
         self.fc = Linear(encoder_params[encoder]["features"], out_dim)
 
     def forward(self, x):
@@ -115,4 +116,4 @@ class LandmarksRegressor(nn.Module):
         x = self.avg_pool(x).flatten(1)
         x = self.dropout(x)
         x = self.fc(x)
-        return x
+        return x.reshape((-1,self.out_dim//2,2))
